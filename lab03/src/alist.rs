@@ -43,7 +43,7 @@ impl<T: Default> AList<T> {
 
     pub fn add_last(&mut self, t: T) {
         if self.len >= self.items.len() {
-            self.resize(self.len + 1);
+            self.resize(self.len * 2);
         }
 
         self.items[self.len] = t;

@@ -32,22 +32,35 @@ Timing table for Vec::last
 
  */
 pub fn benchmark<T: Benchmarkable>() {
-    // some example code
-    // you should delete this code and write actual benchmarking code
-    let mut list = T::new();
-    let start = Instant::now();
-    for _ in 0..10000 {
-        list.add(42);
-    }
-    let add_elapsed = start.elapsed();
-    println!(
-        "Took {:?} to run 10000 {}::{} calls",
-        add_elapsed,
-        T::ALG_NAME,
-        T::ADD_NAME
-    );
+    let mut cur_size = 1000;
 
-    unimplemented!(); // TODO: Fill in this function
+    let mut add_timings: Vec<Timing> = Vec::new();
+
+    for _ in 0..8 {
+        let mut list = T::new();
+        let start = Instant::now();
+        for _ in 0..cur_size {
+            list.add(42);
+        }
+        let add_elapsed = start.elapsed();
+        add_timings.push(Timing::new(cur_size, add_elapsed, cur_size));
+        cur_size = cur_size * 2;
+    }
+    print_timing_table(T::ALG_NAME, T::ADD_NAME, &add_timings);
+
+    let mut get_timings: Vec<Timing> = Vec::new();
+    cur_size = 1000;
+    for _ in 0..8 {
+        let mut list = T::new();
+        let start = Instant::now();
+        for _ in 0..1000 {
+            list.add(42);
+        }
+        let add_elapsed = start.elapsed();
+        get_timings.push(Timing::new(cur_size, add_elapsed, 1000));
+        cur_size = cur_size * 2;
+    }
+    print_timing_table(T::ALG_NAME, T::GET_NAME, &get_timings);
 }
 
 struct Timing {

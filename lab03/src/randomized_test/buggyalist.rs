@@ -34,7 +34,7 @@ impl<T: Default> BAList<T> {
 
     fn resize(&mut self, capacity: usize) {
         let mut new_items = allocate_slice(capacity);
-        for i in 0..self.items.len() {
+        for i in 0..self.len {
             mem::swap(&mut new_items[i], &mut self.items[i]);
         }
         self.items = new_items;
@@ -80,7 +80,7 @@ impl<T: Default> BAList<T> {
             return None;
         }
         if self.len < self.items.len() / 4 && self.len > 4 {
-            self.resize(self.len / 2);
+            self.resize(self.items.len() / 2);
         }
         self.len -= 1;
         Some(mem::take(&mut self.items[self.len]))
