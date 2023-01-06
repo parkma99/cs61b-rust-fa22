@@ -22,7 +22,7 @@ fn test_add_3_remove_3() {
 
 #[test]
 fn randomized_test() {
-    let mut correct:Vec<i32> = Vec::new();
+    let mut correct: Vec<i32> = Vec::new();
     let mut broken: BAList<i32> = BAList::new();
 
     for _ in 0..5000 {
