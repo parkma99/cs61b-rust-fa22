@@ -21,7 +21,7 @@ pub fn main() {
 // This method is bugged! Step through it in rust-gdb to figure out why.
 // Optionally, you can fix the bug
 fn rounded_division(top: i32, bot: i32) -> i32 {
-    let quotient =f64::from(top) / f64::from(bot);
+    let quotient = f64::from(top) / f64::from(bot);
     let result = (f64::from(quotient)).round();
     result as i32
 }
