@@ -1,5 +1,5 @@
 fn is_leap_year(year: i32) -> bool {
-    unimplemented!("is_leap_year") // Optional TODO: Fill in this method
+    (year % 4 == 0 && year % 100 != 0 ) || (year % 400) == 0
 }
 
 fn check_leap_year(year: i32) {

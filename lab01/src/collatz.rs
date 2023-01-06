@@ -1,5 +1,9 @@
 fn next_number(n: u64) -> u64 {
-    unimplemented!() // TODO: Fill in this method
+    if n % 2 == 0 {
+        return n / 2;
+    } else {
+        return 3 * n + 1;
+    }
 }
 
 fn main() {
