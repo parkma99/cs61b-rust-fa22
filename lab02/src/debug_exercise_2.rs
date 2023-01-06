@@ -37,7 +37,7 @@ fn array_sum(v: &Vec<i32>) -> i32 {
     let mut i = 0;
     let mut sum = 0;
     while i < v.len() {
-        sum = sum + add(sum, v[i]);
+        sum = add(sum, v[i]);
         i += 1;
     }
     sum
@@ -47,24 +47,30 @@ fn max(a: i32, b: i32) -> i32 {
     // If you're stepping into this function, just step out (gdb command: finish)
     // because you're not going to learn anything
     // If there is a bug here, just rewrite this function from scratch
-    let w = (b - a) >> 31;
-    let z = !(b - a) >> 31;
-    b & w | a & z
+    if a > b {
+        a
+    } else {
+        b
+    }
+    // let w = (b - a) >> 31;
+    // let z = !(b - a) >> 31;
+    // b & w | a & z
 }
 
 fn add(a: i32, b: i32) -> i32 {
     // If you're stepping into this function, just step out (gdb command: finish)
     // because you're not going to learn anything
     // If there is a bug here, just rewrite this function from scratch
-    let x = a;
-    let y = b;
-    let mut and = x & y;
-    let mut xor = x ^ y;
-    while and != 0 {
-        and <<= 1;
-        let temp = xor ^ and;
-        and &= xor;
-        xor = temp;
-    }
-    xor
+    a + b
+    // let x = a;
+    // let y = b;
+    // let mut and = x & y;
+    // let mut xor = x ^ y;
+    // while and != 0 {
+    //     and <<= 1;
+    //     let temp = xor ^ and;
+    //     and &= xor;
+    //     xor = temp;
+    // }
+    // xor
 }

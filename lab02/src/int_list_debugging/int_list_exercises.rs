@@ -5,12 +5,12 @@ pub fn add_constant(lst: &mut IntList, c: i32) {
     let mut head = lst;
     loop {
         if let IntList::More(v, next) = head {
+            *v += c;
             if let IntList::Empty = **next {
                 break;
             } else {
                 head = next;
             }
-            *v += c;
         }
     }
 }
@@ -46,7 +46,7 @@ fn max(num: i32, lst: &IntList) -> i32 {
 
 fn first_digit_equals_last_digit(mut x: i32) -> bool {
     let last = x % 10;
-    while x > 10 {
+    while x >= 10 {
         x /= 10;
     }
     let first = x % 10;
@@ -63,7 +63,7 @@ pub fn square_primes(lst: &mut IntList) -> bool {
             if cur_is_prime {
                 *v *= *v;
             }
-            cur_is_prime || square_primes(next)
+            square_primes(next) || cur_is_prime
         }
     }
 }

@@ -69,4 +69,11 @@ mod square_primes {
         assert_eq!("[14 -> 15 -> 16 -> 289 -> 18 -> Empty]", lst.to_string());
         assert!(changed);
     }
+    #[test]
+    fn test2() {
+        let mut lst = IntList::from(vec![14, 15, 16, 17, 18, 19, 20]);
+        let changed = square_primes(&mut lst);
+        assert_eq!("[14 -> 15 -> 16 -> 289 -> 18 -> 361 -> 20 -> Empty]", lst.to_string());
+        assert!(changed)
+    }
 }
