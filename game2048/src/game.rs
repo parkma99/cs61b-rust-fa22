@@ -1,11 +1,9 @@
 use std::fmt::Debug;
 
-use crate::{
-    bindings::log,
-    random::Random,
-};
+use crate::{bindings::log, random::Random};
 
 const GENERATE_2_PROBABILITY: f64 = 0.9; // otherwise generates a 4
+const MAX_PIECE: u32 = 2048;
 
 pub struct Board {
     pub tiles: Vec<Vec<u32>>, // indexed by [x][y], (0,0) at top left
@@ -192,5 +190,58 @@ pub fn add_tile(board: &mut Board, random: &mut Random) {
 // returns whether the game is over
 // the game is over if there are no possible moves left
 pub fn game_over(board: &Board) -> bool {
-    unimplemented!(); // TODO: implement this function
+    if max_tile_exists(board) || at_least_one_move_exists(board) {
+        return false;
+    }
+    true
+}
+
+fn max_tile_exists(board: &Board) -> bool {
+    traversing_utils(board, |board: &Board, x: usize, y: usize| {
+        board.tiles[x][y] == MAX_PIECE
+    })
+}
+fn at_least_one_move_exists(board: &Board) -> bool {
+    if empty_space_exists(board) {
+        return true;
+    }
+    traversing_utils(board, |board: &Board, x: usize, y: usize| {
+        if x > 0 && x < board.width - 1 && y > 0 && y < board.height - 1 {
+            let cur = board.tiles[x][y];
+            let left = board.tiles[x - 1][y];
+            let right = board.tiles[x + 1][y];
+            let up = board.tiles[x][y - 1];
+            let down = board.tiles[x][y + 1];
+            return left == cur || right == cur || up == cur || down == cur;
+        }
+        if (x == 0 || x == board.width - 1) && y > 0 && y < board.height - 1 {
+            let cur = board.tiles[x][y];
+            let up = board.tiles[x][y - 1];
+            let down = board.tiles[x][y + 1];
+            return up == cur || down == cur;
+        }
+        if (y == 0 || y == board.height - 1) && x > 0 && x < board.width - 1 {
+            let cur = board.tiles[x][y];
+            let left = board.tiles[x - 1][y];
+            let right = board.tiles[x + 1][y];
+            return left == cur || right == cur;
+        }
+        false
+    })
+}
+fn empty_space_exists(board: &Board) -> bool {
+    traversing_utils(board, |board: &Board, x: usize, y: usize| {
+        board.tiles[x][y] == 0
+    })
+}
+
+fn traversing_utils(board: &Board, func: fn(&Board, usize, usize) -> bool) -> bool {
+    for a in 0..board.width {
+        for b in 0..board.height {
+            if func(board, a, b) {
+                return true;
+            }
+        }
+    }
+    false
 }
