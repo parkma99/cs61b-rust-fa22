@@ -147,9 +147,70 @@ fn unrotate_move(rotated: &RotatedBoard, mt: &mut MovingTile) {
 pub fn tilt(board: &Board, dir: Direction) -> Option<(Board, Vec<MovingTile>, u32)> {
     log!("This is an example log message. Use log messages to help you debug!");
 
-    unimplemented!(); // TODO: implement this function
+    let mut rotated = rotate_board(board, dir);
+    let mut score = 0;
+    let mut movings: Vec<MovingTile> = Vec::new();
+    let mut is_changed = false;
 
-    // HINT: rotate_board, unrotate_board, and unrotate_move should be useful here
+    for col in 0..rotated.width {
+        let mut row = 0;
+        let mut is_merged = false;
+        let mut is_moving = false;
+        let mut last_merged = 0;
+        let mut is_checked = false;
+        while row < rotated.height {
+            let cur = rotated.tiles[col][row];
+            if cur != 0 && !is_moving && !is_checked {
+                movings.push(MovingTile::new(col, row, col, row, cur));
+            }
+            match next_not_null_tile_row(&rotated, col, row) {
+                None => {
+                    break;
+                }
+                Some(pos) => {
+                    if last_merged != row {
+                        is_merged = false;
+                    }
+                    let next = rotated.tiles[col][pos];
+                    if cur == 0 || !is_merged && cur == next {
+                        if cur != 0 && row != pos {
+                            score += next * 2;
+                            is_merged = true;
+                            last_merged = row;
+                        }
+                        is_changed = true;
+                        is_moving = true;
+                        rotated.tiles[col][pos] = 0;
+                        rotated.tiles[col][row] += next;
+                        movings.push(MovingTile::new(col, pos, col, row, next));
+                    }
+                    if row == pos {
+                        break;
+                    }
+                    if is_checked || is_merged {
+                        is_checked = false;
+                        row += 1;
+                    } else {
+                        is_checked = true;
+                    }
+                }
+            }
+        }
+    }
+
+    match is_changed {
+        false => None,
+        true => {
+            for moving in movings.iter_mut() {
+                unrotate_move(&rotated, moving)
+            }
+            let result = unrotate_board(rotated);
+            Some((result, movings, score))
+        }
+    }
+}
+fn next_not_null_tile_row(rotated: &RotatedBoard, col: usize, row: usize) -> Option<usize> {
+    (row + 1..rotated.height).find(|&pos| rotated.tiles[col][pos] != 0)
 }
 
 // Add a random tile to the given board
