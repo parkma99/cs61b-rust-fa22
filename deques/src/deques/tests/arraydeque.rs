@@ -1,9 +1,9 @@
-use crate::deques::{linkedlistdeque::LinkedListDeque, Deque};
+use crate::deques::{arraydeque::ArrayDeque, Deque};
 use rand::Rng;
 
 #[test]
 fn add_is_empty_size_test() {
-    let mut lld = LinkedListDeque::new();
+    let mut lld = ArrayDeque::new();
     assert!(lld.is_empty());
 
     lld.add_first("front");
@@ -21,7 +21,7 @@ fn add_is_empty_size_test() {
 
 #[test]
 fn add_remove_test() {
-    let mut lld = LinkedListDeque::new();
+    let mut lld = ArrayDeque::new();
     assert!(lld.is_empty());
 
     lld.add_first(10);
@@ -42,7 +42,7 @@ fn add_remove_test() {
 
 #[test]
 fn remove_empty_test() {
-    let mut lld = LinkedListDeque::new();
+    let mut lld = ArrayDeque::new();
     lld.add_first(10);
 
     let el = lld.remove_last();
@@ -66,34 +66,34 @@ fn remove_empty_test() {
 
 #[test]
 fn multiple_param_test() {
-    let mut lld = LinkedListDeque::new();
+    let mut lld = ArrayDeque::new();
     lld.add_first(10 as i32);
     assert_eq!(lld.remove_last(), Some(10));
 
-    let mut lld = LinkedListDeque::new();
+    let mut lld = ArrayDeque::new();
     lld.add_first(10. as f64);
     assert_eq!(lld.remove_last(), Some(10.));
 
-    let mut lld = LinkedListDeque::new();
+    let mut lld = ArrayDeque::new();
     lld.add_first(10 as usize);
     assert_eq!(lld.remove_last(), Some(10));
 
-    let mut lld = LinkedListDeque::new();
+    let mut lld = ArrayDeque::new();
     lld.add_first(true);
     assert_eq!(lld.remove_last(), Some(true));
 
-    let mut lld = LinkedListDeque::new();
+    let mut lld = ArrayDeque::new();
     lld.add_first("cheese");
     assert_eq!(lld.remove_last(), Some("cheese"));
 
-    let mut lld = LinkedListDeque::new();
+    let mut lld = ArrayDeque::new();
     lld.add_first("cheese".to_string());
     assert_eq!(lld.remove_last(), Some("cheese".to_string()));
 }
 
 #[test]
 fn really_empty_test() {
-    let mut lld = LinkedListDeque::<i32>::new();
+    let mut lld = ArrayDeque::<i32>::new();
     assert_eq!(lld.remove_first(), None);
     assert_eq!(lld.remove_last(), None);
     assert_eq!(lld.get_first(), None);
@@ -106,7 +106,7 @@ fn really_empty_test() {
 fn big_test() {
     const N: usize = 1000000;
     const MID: usize = 500000;
-    let mut lld = LinkedListDeque::new();
+    let mut lld = ArrayDeque::new();
     for i in 0..N {
         lld.add_last(i);
     }
@@ -120,7 +120,7 @@ fn big_test() {
 
 #[test]
 fn get_test() {
-    let mut lld = LinkedListDeque::new();
+    let mut lld = ArrayDeque::new();
     lld.add_first(10);
     lld.add_first(5);
 
@@ -138,7 +138,7 @@ fn get_test() {
 
 #[test]
 fn get_fist_remove_next_back_test() {
-    let mut lld = LinkedListDeque::new();
+    let mut lld = ArrayDeque::new();
     lld.add_first(10);
     lld.add_last(5);
     lld.add_first(20);
@@ -151,7 +151,7 @@ fn get_fist_remove_next_back_test() {
 
 #[test]
 fn get_last_remove_next_back_test() {
-    let mut lld = LinkedListDeque::new();
+    let mut lld = ArrayDeque::new();
     lld.add_last(10);
     lld.add_first(5);
     lld.add_last(20);
@@ -166,7 +166,7 @@ fn get_last_remove_next_back_test() {
 fn random_test() {
     const TIMES: i32 = 100000;
     let mut rng = rand::thread_rng();
-    let mut lld = LinkedListDeque::new();
+    let mut lld = ArrayDeque::new();
     let mut vector = Vec::new();
 
     for _ in 0..TIMES {

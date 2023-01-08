@@ -1,5 +1,8 @@
 use std::fmt::Display;
 
+pub mod arraydeque;
+pub mod averagingdeque;
+pub mod linkedlistdeque;
 #[cfg(test)]
 mod tests;
 
