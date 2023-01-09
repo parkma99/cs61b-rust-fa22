@@ -1,32 +1,34 @@
+use crate::deques::{arraydeque::ArrayDeque, Deque};
 use super::random::Random;
 
 #[derive(Default)]
 pub struct GuitarString {
     note_attenuation: f32,
-    // deque: ArrayDeque<f32>, TODO: uncomment this
+    deque: ArrayDeque<f32>,
 }
 
 impl GuitarString {
     pub fn new(sample_rate: u32, note_atten: f32, freq: u32) -> Self {
         let deque_len = sample_rate / freq;
-        unimplemented!(); // TODO: create a GuitarString with a buffer filled with 0s
+        let mut deque = ArrayDeque::new();
+        for _ in 0..deque_len {
+            deque.add_last(0.0);
+        }
+        Self {
+            note_attenuation: note_atten,
+            deque,
+        }
     }
 
     /* Pluck the guitar string by replacing the buffer with white noise. */
     pub fn pluck(&mut self, rand: &mut Random) {
 
         // example usage of rand
-        let val = (rand.next_f64() - 0.5) as f32;
-        // "as" is ok because we want to lose precision
-
-        unimplemented!();
-        // TODO: Dequeue everything in buffer, and replace with random numbers
-        //       between -0.5 and 0.5.
-        //
-        //       Make sure that your random numbers are different from each
-        //       other. This does not mean that you need to check that the numbers
-        //       are different from each other. It means you should repeatedly call
-        //       rand.next_f64() - 0.5 to generate new random numbers for each array index.
+        for _ in 0..self.deque.len() {
+            self.deque.remove_first();
+            let val = (rand.next_f64() - 0.5) as f32;
+            self.deque.add_last(val);
+        }
     }
 
     /* Advance the simulation by performing one iteration of the Karplus-Strong algorithm:
@@ -35,6 +37,10 @@ impl GuitarString {
         - return the popped sample
     */
     pub fn advance(&mut self) -> f32 {
-        unimplemented!(); // TODO: code
+        let first = self.deque.remove_first().unwrap();
+        let second = self.deque.get_first().unwrap();
+        let next = (first + second) / 2.0 * self.note_attenuation;
+        self.deque.add_last(next);
+        first
     }
 }

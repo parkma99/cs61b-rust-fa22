@@ -1,6 +1,7 @@
 use crate::deques::Deque;
 use std::{fmt::Display, mem};
 
+#[derive(Default)]
 pub struct ArrayDeque<T> {
     items: Box<[T]>,
     head: usize,
