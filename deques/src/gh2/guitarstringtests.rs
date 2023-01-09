@@ -1,14 +1,12 @@
 use super::{guitarstring::GuitarString, random::Random};
 
-
-
 #[test]
 fn test_1() {
     let mut gs = GuitarString::new(100, 0.996, 1);
     for _ in 0..200 {
         assert_eq!(gs.advance(), 0.);
     }
-    
+
     gs.pluck(&mut Random::new("cheese"));
     for _ in 0..100 {
         assert_ne!(gs.advance(), 0.);

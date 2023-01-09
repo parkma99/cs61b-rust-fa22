@@ -1,5 +1,5 @@
-use crate::deques::{arraydeque::ArrayDeque, Deque};
 use super::random::Random;
+use crate::deques::{arraydeque::ArrayDeque, Deque};
 
 #[derive(Default)]
 pub struct GuitarString {
@@ -22,7 +22,6 @@ impl GuitarString {
 
     /* Pluck the guitar string by replacing the buffer with white noise. */
     pub fn pluck(&mut self, rand: &mut Random) {
-
         // example usage of rand
         for _ in 0..self.deque.len() {
             self.deque.remove_first();

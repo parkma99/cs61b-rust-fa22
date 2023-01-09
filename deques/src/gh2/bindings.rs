@@ -89,7 +89,6 @@ impl MusicBox {
     }
 
     pub fn process(&mut self, cheese: &mut [f32]) -> bool {
-
         match &mut self.player {
             Player::SingleNote(gs) => {
                 if self.samples_returned == 0 {
@@ -111,7 +110,6 @@ impl MusicBox {
                 strings,
                 volumes,
             } => {
-
                 for (a, sample) in cheese.iter_mut().enumerate() {
                     while *index < notes.len()
                         && which_sample(notes[*index].time, *samples_per_tick)
@@ -152,14 +150,17 @@ fn bytes_to_notes(bytes: &[u8]) -> Vec<Note> {
     let mut res = Vec::new();
     let mut i = 0;
     while i < bytes.len() {
-        let time = (bytes[i] as u32) | (bytes[i+1] as u32) << 8 | (bytes[i+2] as u32) << 16 | (bytes[i+3] as u32) << 24;
-        let (on, key) = if bytes[i+4] >= 128 {
-            (true, bytes[i+4] - 128)
+        let time = (bytes[i] as u32)
+            | (bytes[i + 1] as u32) << 8
+            | (bytes[i + 2] as u32) << 16
+            | (bytes[i + 3] as u32) << 24;
+        let (on, key) = if bytes[i + 4] >= 128 {
+            (true, bytes[i + 4] - 128)
         } else {
-            (false, bytes[i+4])
+            (false, bytes[i + 4])
         };
-        let vel = bytes[i+5];
-        res.push(Note{ time, on, key, vel});
+        let vel = bytes[i + 5];
+        res.push(Note { time, on, key, vel });
         i += 6;
     }
     res
